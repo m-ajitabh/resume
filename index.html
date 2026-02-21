@@ -1,27 +1,513 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PDF Viewer</title>
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow: hidden;
-    }
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajitabh Ranjan | Intelligent Automation Architect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4; 
+            color: #1c1917; 
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 20px;
+            width: 2px;
+            background: #d6d3d1;
+            z-index: 0;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals (Stone) with Sky Blue/Teal Accents -->
 </head>
-<body>
-  <iframe src="https://drive.google.com/file/d/1_IaMqMlJsyM9J7mw63H63gIigtQHt33L/preview" width="100%" height="600"></iframe>
-  < !--- https://drive.google.com/file/d/1_IaMqMlJsyM9J7mw63H63gIigtQHt33L/view?usp=sharing --->
-  
+<body class="antialiased selection:bg-stone-300">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-stone-800 tracking-tight" id="nav-initials">AR.</span>
+                </div>
+                <div class="hidden sm:flex sm:space-x-8 items-center">
+                    <button onclick="scrollToSection('dashboard')" class="text-stone-600 hover:text-stone-900 px-3 py-2 text-sm font-medium">Dashboard</button>
+                    <button onclick="scrollToSection('experience')" class="text-stone-600 hover:text-stone-900 px-3 py-2 text-sm font-medium">Experience</button>
+                    <button onclick="scrollToSection('projects')" class="text-stone-600 hover:text-stone-900 px-3 py-2 text-sm font-medium">Projects</button>
+                    <button onclick="scrollToSection('skills')" class="text-stone-600 hover:text-stone-900 px-3 py-2 text-sm font-medium">Skills</button>
+                </div>
+                <div class="flex items-center sm:hidden">
+                    <button id="mobile-menu-btn" class="text-stone-500 hover:text-stone-700">☰</button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden sm:hidden bg-white border-t border-stone-200">
+            <div class="pt-2 pb-4 space-y-1">
+                <button onclick="scrollToSection('dashboard')" class="block w-full text-left px-4 py-2 text-stone-600 hover:bg-stone-50">Dashboard</button>
+                <button onclick="scrollToSection('experience')" class="block w-full text-left px-4 py-2 text-stone-600 hover:bg-stone-50">Experience</button>
+                <button onclick="scrollToSection('projects')" class="block w-full text-left px-4 py-2 text-stone-600 hover:bg-stone-50">Projects</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="bg-white border-b border-stone-200">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-start md:items-center">
+            <div id="hero-content">
+                <!-- Populated by JS -->
+            </div>
+            <div class="mt-6 md:mt-0 flex gap-3">
+                <button class="bg-stone-900 text-white px-5 py-2.5 rounded hover:bg-stone-700 transition shadow-sm font-medium">
+                    Download Resume
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- Intro Text -->
+        <section id="intro" class="prose prose-stone max-w-none">
+            <p id="intro-paragraph" class="text-lg text-stone-600 leading-relaxed">
+                <!-- Populated by JS -->
+            </p>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="space-y-6">
+            <div class="border-l-4 border-sky-500 pl-4">
+                <h2 class="text-2xl font-bold text-stone-900">Executive Dashboard</h2>
+                <p class="text-stone-500 text-sm">Key metrics and competency distribution</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="stats-grid">
+                <!-- Populated by JS -->
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-stone-100">
+                    <h3 class="text-lg font-semibold text-stone-800 mb-4 text-center">Competency Matrix</h3>
+                    <div class="chart-container">
+                        <canvas id="skillsRadar"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-stone-100">
+                    <h3 class="text-lg font-semibold text-stone-800 mb-4 text-center">Measured Impact Breakdown</h3>
+                    <div class="chart-container">
+                        <canvas id="impactChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Interactive Section -->
+        <section id="experience" class="scroll-mt-20">
+            <div class="border-l-4 border-sky-500 pl-4 mb-6">
+                <h2 class="text-2xl font-bold text-stone-900">Professional Journey</h2>
+                <p class="text-stone-500 text-sm">Interactive timeline of roles and achievements.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-4 bg-white rounded-lg shadow-sm border border-stone-100 p-6 timeline-line relative">
+                    <div id="timeline-list" class="space-y-8 relative z-10"></div>
+                </div>
+                <div class="lg:col-span-8">
+                    <div id="role-detail-panel" class="bg-white rounded-lg shadow-lg border border-stone-100 p-8 h-full transition-all duration-300">
+                        <div class="flex flex-col items-center justify-center h-full text-stone-400">
+                            <p class="text-lg">Select a role from the timeline to view details</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Projects -->
+        <section id="projects" class="scroll-mt-20">
+            <div class="border-l-4 border-sky-500 pl-4 mb-6">
+                <h2 class="text-2xl font-bold text-stone-900">Featured Projects</h2>
+                <p class="text-stone-500 text-sm">Strategic initiatives integrating AI, Machine Learning, and RPA.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="projects-grid">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- Technical Skills Filter -->
+        <section id="skills" class="scroll-mt-20">
+            <div class="border-l-4 border-sky-500 pl-4 mb-6">
+                <h2 class="text-2xl font-bold text-stone-900">Technical Arsenal</h2>
+                <p class="text-stone-500 text-sm">Filter skills by category to see the full stack.</p>
+            </div>
+            <div class="bg-white rounded-lg border border-stone-200 p-6">
+                <div class="flex flex-wrap gap-2 mb-6" id="skill-filters">
+                    <button class="filter-btn px-4 py-2 text-sm font-medium rounded-full bg-stone-800 text-white" data-filter="all">All</button>
+                    <button class="filter-btn px-4 py-2 text-sm font-medium rounded-full bg-stone-100 text-stone-600" data-filter="rpa">RPA & Tools</button>
+                    <button class="filter-btn px-4 py-2 text-sm font-medium rounded-full bg-stone-100 text-stone-600" data-filter="ai">AI & ML</button>
+                    <button class="filter-btn px-4 py-2 text-sm font-medium rounded-full bg-stone-100 text-stone-600" data-filter="code">Code & DB</button>
+                    <button class="filter-btn px-4 py-2 text-sm font-medium rounded-full bg-stone-100 text-stone-600" data-filter="cloud">Cloud & DevOps</button>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4" id="skills-grid"></div>
+            </div>
+        </section>
+
+        <!-- Education & Certs -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8 pb-12">
+            <div>
+                <h3 class="text-xl font-bold text-stone-900 mb-4">Education</h3>
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-stone-100 space-y-4" id="education-container"></div>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold text-stone-900 mb-4">Certifications</h3>
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-stone-100">
+                    <ul class="space-y-3" id="certs-list"></ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-900 text-stone-400 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p id="footer-text"></p>
+        </div>
+    </footer>
+
+    <script>
+        // Central Data Object (JSON)
+        const resumeData = {
+            profile: {
+                name: "Ajitabh Ranjan",
+                initials: "AR.",
+                title: "Lead Developer – Intelligent Automation | RPA Architect | AI Engineer",
+                location: "Bangalore, Karnataka",
+                email: "ajitabh.bmsce@gmail.com",
+                phone: "+91-7026300785",
+                intro: "Welcome to my interactive professional portfolio. This application synthesizes over <strong>11 years of software development experience</strong> and specialized expertise in <strong>Intelligent Automation and RPA</strong>. Explore the dashboard below to visualize my technical competencies and the measurable business impact I've delivered, including significant cost reductions and operational efficiency gains."
+            },
+            metrics: [
+                { label: "Total Experience", value: "11+", subValue: "Years", note: "6+ Years in Intelligent Automation", color: "sky" },
+                { label: "Automation Impact", value: "180+", subValue: "FTE Hours/Yr", note: "25+ Production Bots Delivered", color: "green" },
+                { label: "Optimization", value: "25%", subValue: "Workload Reduced", note: "Across Finance, HR, & Ops", color: "indigo" }
+            ],
+            charts: {
+                radar: {
+                    labels: ['RPA Architecture', 'AI Integration', 'Python/Java', 'Cloud (AWS/Azure)', 'Testing (Selenium)', 'Leadership', 'Data Analytics'],
+                    values: [9.5, 8, 9, 7.5, 8.5, 8, 7]
+                },
+                impact: {
+                    labels: ['Workload Reduced', 'License Cost Savings', 'Testing Efficiency', 'Extraction Accuracy'],
+                    values: [25, 15, 60, 95]
+                }
+            },
+            experience: [
+                {
+                    id: "saks",
+                    role: "Lead Developer – Intelligent Automation",
+                    company: "Saks Global",
+                    period: "Jan 2019 – Present",
+                    location: "Bangalore, India",
+                    summary: "Architecting scalable automation solutions and leading migration initiatives.",
+                    highlights: [
+                        "**Architected and spearheaded** the end-to-end delivery of **25+ enterprise-grade bots** resulting in a **20-25% reduction** in manual workload.",
+                        "**Engineered** a hybrid automation ecosystem integrating UiPath with Open-Source Python/Java frameworks.",
+                        "**Led a high-impact migration** of the RPA infrastructure from Azure to AWS.",
+                        "**Implemented AI-powered solutions** using UiPath Document Understanding and Google Gemini.",
+                        "**Established Enterprise Governance:** Improved code maintainability by **40%**."
+                    ]
+                },
+                {
+                    id: "isteer",
+                    role: "System Engineer (Automation Frameworks)",
+                    company: "iSteer Technologies",
+                    period: "Aug 2016 – Aug 2019",
+                    location: "Bangalore, India",
+                    summary: "Developed robust test automation frameworks for high-profile clients.",
+                    highlights: [
+                        "**Developed and maintained** robust test automation frameworks using Selenium and Appium for Reliance (JIO), Future Group, and Motorola Solutions.",
+                        "**Reduced regression testing cycles by 60%** by designing scripts for **800+ test cases**.",
+                        "**Mentored** a team of 5 junior engineers in automation best practices.",
+                        "Executed complex API testing using SoapUI."
+                    ]
+                },
+                {
+                    id: "brownpacket",
+                    role: "Product Manager – QA (Founding Member)",
+                    company: "Brownpacket",
+                    period: "Aug 2016 – Aug 2019",
+                    location: "Bangalore, India",
+                    summary: "Directed full-cycle product development for a health-tech startup.",
+                    highlights: [
+                        "**Directed full-cycle product development**, overseeing mobile app architecture and backend module integration.",
+                        "**Leveraged Data Analytics:** Implemented Adobe/Google Analytics to drive product iterations.",
+                        "Administered AWS infrastructure to ensure high availability."
+                    ]
+                }
+            ],
+            projects: [
+                { title: "Product Classification Model", tags: ["TensorFlow", "Python", "AI/ML"], accent: "indigo", description: "Built a TensorFlow-based image classification model to automatically categorize and rename **10,000+ product images**." },
+                { title: "Intelligent Invoice Processor", tags: ["MuleSoft IDP", "UiPath DU"], accent: "sky", description: "Integrated MuleSoft IDP and UiPath Document Understanding to process semi-structured invoices with **95% extraction accuracy**." },
+                { title: "Generative AI Integration", tags: ["Google Gemini", "GenAI"], accent: "teal", description: "Deployed Google Gemini API within UiPath workflows to automate creative copy generation for digital marketing teams." }
+            ],
+            skills: [
+                { name: "UiPath (Adv)", category: "rpa" },
+                { name: "MuleSoft RPA", category: "rpa" },
+                { name: "Robocorp", category: "rpa" },
+                { name: "Automation Anywhere", category: "rpa" },
+                { name: "Document Understanding", category: "ai" },
+                { name: "TensorFlow", category: "ai" },
+                { name: "Google Gemini AI", category: "ai" },
+                { name: "Python", category: "code" },
+                { name: "Java", category: "code" },
+                { name: "SQL / Snowflake", category: "code" },
+                { name: "AWS", category: "cloud" },
+                { name: "Docker", category: "cloud" },
+                { name: "Selenium", category: "rpa" }
+            ],
+            education: [
+                { degree: "M.Tech Computer Science", institution: "RVSCET, Jamshedpur", year: "2013-2015", cgpa: "8.6" },
+                { degree: "B.E. Electronics & Inst.", institution: "BMS College of Engineering, Bangalore", year: "2006-2010", cgpa: "6.0" }
+            ],
+            certifications: [
+                { name: "UiPath Advanced Developer (Level 3)", color: "green" },
+                { name: "Robocorp Certified Professional (Level 2)", color: "blue" },
+                { name: "Google Professional Crash Course on Python", color: "yellow" },
+                { name: "Automation Anywhere A360 Professional Training", color: "orange" }
+            ]
+        };
+
+        // UI Initialization Functions
+        function initApp() {
+            populateProfile();
+            populateStats();
+            initCharts();
+            renderTimeline();
+            renderProjects();
+            renderSkills('all');
+            renderEducation();
+            renderCerts();
+            setupInteractions();
+            selectJob(resumeData.experience[0].id);
+        }
+
+        function populateProfile() {
+            document.getElementById('nav-initials').innerText = resumeData.profile.initials;
+            document.getElementById('hero-content').innerHTML = `
+                <h1 class="text-4xl font-extrabold text-stone-900 tracking-tight sm:text-5xl">${resumeData.profile.name}</h1>
+                <p class="mt-2 text-xl text-sky-600 font-semibold">${resumeData.profile.title}</p>
+                <div class="mt-4 flex flex-wrap gap-4 text-sm text-stone-500">
+                    <span class="flex items-center">📍 ${resumeData.profile.location}</span>
+                    <span class="flex items-center">📧 ${resumeData.profile.email}</span>
+                    <span class="flex items-center">📱 ${resumeData.profile.phone}</span>
+                </div>
+            `;
+            document.getElementById('intro-paragraph').innerHTML = resumeData.profile.intro;
+            document.getElementById('footer-text').innerText = `© ${new Date().getFullYear()} ${resumeData.profile.name} Portfolio. Dynamic Content System.`;
+        }
+
+        function populateStats() {
+            const grid = document.getElementById('stats-grid');
+            grid.innerHTML = resumeData.metrics.map(m => `
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-stone-100 hover:shadow-md transition">
+                    <div class="text-stone-500 text-sm font-medium uppercase tracking-wide">${m.label}</div>
+                    <div class="mt-2 flex items-baseline">
+                        <span class="text-4xl font-extrabold text-stone-900">${m.value}</span>
+                        <span class="ml-2 text-stone-600">${m.subValue}</span>
+                    </div>
+                    <div class="mt-1 text-xs text-${m.color}-600 font-medium">${m.note}</div>
+                </div>
+            `).join('');
+        }
+
+        function initCharts() {
+            // Radar
+            new Chart(document.getElementById('skillsRadar'), {
+                type: 'radar',
+                data: {
+                    labels: resumeData.charts.radar.labels,
+                    datasets: [{
+                        label: 'Level (1-10)',
+                        data: resumeData.charts.radar.values,
+                        fill: true,
+                        backgroundColor: 'rgba(14, 165, 233, 0.2)',
+                        borderColor: 'rgb(14, 165, 233)',
+                        pointBackgroundColor: 'rgb(14, 165, 233)'
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+
+            // Impact Bar
+            new Chart(document.getElementById('impactChart'), {
+                type: 'bar',
+                data: {
+                    labels: resumeData.charts.impact.labels,
+                    datasets: [{
+                        data: resumeData.charts.impact.values,
+                        backgroundColor: ['#0ea5e9', '#6366f1', '#10b981', '#f59e0b']
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { x: { beginAtZero: true, max: 100, ticks: { callback: v => v + "%" } } },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function renderTimeline() {
+            const container = document.getElementById('timeline-list');
+            container.innerHTML = resumeData.experience.map(job => `
+                <div class="relative pl-8 cursor-pointer group" onclick="selectJob('${job.id}')">
+                    <div class="absolute left-0 top-1 w-4 h-4 rounded-full bg-stone-300 border-2 border-white group-hover:bg-sky-500 transition timeline-dot" id="dot-${job.id}"></div>
+                    <div>
+                        <h4 class="text-sm font-bold text-stone-800 group-hover:text-sky-600 transition">${job.company}</h4>
+                        <p class="text-xs text-stone-500">${job.period}</p>
+                        <p class="text-xs text-stone-400 mt-1 truncate">${job.role}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectJob(id) {
+            const job = resumeData.experience.find(j => j.id === id);
+            document.querySelectorAll('.timeline-dot').forEach(d => {
+                d.classList.remove('bg-sky-500', 'scale-125');
+                d.classList.add('bg-stone-300');
+            });
+            document.getElementById(`dot-${id}`).classList.add('bg-sky-500', 'scale-125');
+
+            const panel = document.getElementById('role-detail-panel');
+            panel.innerHTML = `
+                <div class="animate-fade-in">
+                    <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-6 border-b border-stone-100 pb-4">
+                        <div>
+                            <h3 class="text-2xl font-bold text-stone-800">${job.role}</h3>
+                            <div class="text-lg text-sky-600 font-medium">${job.company}</div>
+                        </div>
+                        <div class="mt-2 text-right">
+                            <div class="text-sm text-stone-500 font-semibold">${job.period}</div>
+                            <div class="text-xs text-stone-400">${job.location}</div>
+                        </div>
+                    </div>
+                    <div class="mb-6 bg-stone-50 p-4 rounded-lg border border-stone-100">
+                        <p class="text-stone-700 italic text-sm">"${job.summary}"</p>
+                    </div>
+                    <ul class="space-y-3">
+                        ${job.highlights.map(h => {
+                            const formatted = h.replace(/\*\*(.*?)\*\*/g, '<strong class="text-stone-900">$1</strong>');
+                            return `<li class="flex items-start text-stone-600 text-sm leading-relaxed"><span class="mr-3 mt-1.5 text-sky-500 text-xs">➤</span><span>${formatted}</span></li>`;
+                        }).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        function renderProjects() {
+            const grid = document.getElementById('projects-grid');
+            grid.innerHTML = resumeData.projects.map(p => `
+                <div class="bg-white rounded-lg shadow-sm border border-stone-100 overflow-hidden hover:border-sky-200 transition group">
+                    <div class="h-2 bg-${p.accent}-500"></div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg text-stone-800">${p.title}</h3>
+                        <div class="mt-2 flex flex-wrap gap-2">
+                            ${p.tags.map(t => `<span class="px-2 py-1 bg-stone-100 text-stone-600 text-xs rounded font-mono">${t}</span>`).join('')}
+                        </div>
+                        <p class="mt-4 text-stone-600 text-sm">${p.description.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderSkills(filter) {
+            const grid = document.getElementById('skills-grid');
+            const data = filter === 'all' ? resumeData.skills : resumeData.skills.filter(s => s.category === filter);
+            grid.innerHTML = data.map(s => `
+                <div class="bg-stone-50 border border-stone-200 rounded px-3 py-2 text-center hover:bg-white hover:shadow-sm transition">
+                    <span class="text-sm font-medium text-stone-700">${s.name}</span>
+                </div>
+            `).join('');
+        }
+
+        function renderEducation() {
+            const container = document.getElementById('education-container');
+            container.innerHTML = resumeData.education.map((e, idx) => `
+                <div class="${idx > 0 ? 'border-t border-stone-100 pt-4' : ''}">
+                    <div class="flex justify-between items-baseline">
+                        <h4 class="font-bold text-stone-800">${e.degree}</h4>
+                        <span class="text-sm text-stone-500">${e.year}</span>
+                    </div>
+                    <p class="text-stone-600 text-sm">${e.institution}</p>
+                    <p class="text-xs text-stone-400 mt-1">CGPA: ${e.cgpa}</p>
+                </div>
+            `).join('');
+        }
+
+        function renderCerts() {
+            const list = document.getElementById('certs-list');
+            list.innerHTML = resumeData.certifications.map(c => `
+                <li class="flex items-center text-stone-700 text-sm">
+                    <span class="w-2 h-2 bg-${c.color}-500 rounded-full mr-3"></span>${c.name}
+                </li>
+            `).join('');
+        }
+
+        function setupInteractions() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.filter-btn').forEach(b => {
+                        b.classList.remove('bg-stone-800', 'text-white');
+                        b.classList.add('bg-stone-100', 'text-stone-600');
+                    });
+                    e.target.classList.remove('bg-stone-100', 'text-stone-600');
+                    e.target.classList.add('bg-stone-800', 'text-white');
+                    renderSkills(e.target.dataset.filter);
+                });
+            });
+
+            document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.toggle('hidden');
+            });
+        }
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
 </body>
 </html>
-
